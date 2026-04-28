@@ -15,3 +15,10 @@ index=* sourcetype=WinEventLog:Security EventCode=4625
 index=* sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624)
 | rename Account_Name as user
 | stats count by EventCode, user, host
+
+
+index=* sourcetype=WinEventLog:Security EventCode=4625
+| rex "Account Name:\s+(?<user>\S+)"
+| eval src_ip=Source_Network_Address
+| stats count by user, src_ip
+| sort -count
