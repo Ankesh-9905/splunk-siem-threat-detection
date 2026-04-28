@@ -1,0 +1,17 @@
+
+
+
+index=* sourcetype=WinEventLog:Security
+
+index=* sourcetype=WinEventLog:Security EventCode=4625
+| rename Account_Name as user
+| stats count by user, host
+
+index=* sourcetype=WinEventLog:Security EventCode=4625
+| rename Account_Name as user
+| stats count by user, host
+| where count > 5
+
+index=* sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624)
+| rename Account_Name as user
+| stats count by EventCode, user, host
